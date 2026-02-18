@@ -1,6 +1,6 @@
 # odcs-json-ref-example
 
-Use `jsonref` and `$ref` in ODCS files to dereference reusable schemas & properties into multiple disparate physical schemas.
+**Idea**: Use python package `jsonref` and JSON Schema `$ref` syntax in ODCS files when needed to re-use elements of an ODCS spec across multiple disparate physical schemas.
 
 The `./3.1.0` folder uses `$ref` with the current spec version. Because JSON Schemas use references with [JSON Pointer](https://datatracker.ietf.org/doc/html/rfc6901#section-4) syntax, accessing the array elements is awkward and brittle:
 
