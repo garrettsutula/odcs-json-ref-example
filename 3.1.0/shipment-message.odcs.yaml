@@ -1,0 +1,38 @@
+apiVersion: "v3.1.0"
+kind: "DataContract"
+id: "valid_odcs"
+name: "Shipment Message"
+version: "2.0.0"
+status: "draft"
+tenant: "company-A"
+tags:
+- "datalocation:EU"
+description:
+  purpose: "This data can be used for analytical purposes"
+  usage: "Use this to analyze shipments"
+  limitations: "Not suitable for real-time use cases"
+  authoritativeDefinitions:
+  - type: "Data Guidelines"
+    url: "https://example.com/data-guidelines.html"
+  customProperties:
+  - property: "github_link"
+    value: "https://github.example.com/shipment-specification.yaml"
+customProperties:
+- property: "additionalField"
+  value: "some value in a new major contract"
+schema:
+- name: "shipment event"
+  physicalType: "message"
+  businessName: "Shipments"
+  description: "This table contains shipment data, including details about shipment IDs, associated orders, delivery dates, carriers, tracking numbers, statuses, and additional shipment information in JSON format."
+  dataGranularityDescription: "Not Aggregated"
+  logicalType: object
+  tags:
+  - "pii"
+  properties:
+  - name: id
+  - name: source
+  - name: specversion
+  - name: type
+  - name: payload
+    $ref: shipment.odcs.yaml#/schema/0

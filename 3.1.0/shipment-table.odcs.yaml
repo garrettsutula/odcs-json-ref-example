@@ -1,0 +1,99 @@
+apiVersion: "v3.1.0"
+kind: "DataContract"
+id: "valid_odcs"
+name: "Shipment Table"
+version: "2.0.0"
+status: "draft"
+tenant: "company-A"
+tags:
+- "datalocation:EU"
+description:
+  purpose: "This data can be used for analytical purposes"
+  usage: "Use this to analyze shipments"
+  limitations: "Not suitable for real-time use cases"
+  authoritativeDefinitions:
+  - type: "Data Guidelines"
+    url: "https://example.com/data-guidelines.html"
+  customProperties:
+  - property: "github_link"
+    value: "https://github.example.com/shipment-specification.yaml"
+customProperties:
+- property: "additionalField"
+  value: "some value in a new major contract"
+schema:
+- name: "shipments2"
+  physicalType: "table"
+  physicalName: "shipments_v2"
+  businessName: "Shipments"
+  description: "This table contains shipment data, including details about shipment IDs, associated orders, delivery dates, carriers, tracking numbers, statuses, and additional shipment information in JSON format."
+  dataGranularityDescription: "Not Aggregated"
+  logicalType: object
+  tags:
+  - "pii"
+  quality:
+  - type: "sql"
+    description: "Table shall contain at least 1 row"
+    query: "SELECT COUNT(*) FROM shipments"
+    mustBeGreaterOrEqualTo: 1
+  - type: "library"
+    description: "same as above as type library"
+    metric: rowCount
+    mustBeGreaterOrEqualTo: 1
+  - description: "same as above as type default"
+    metric: rowCount
+    mustBeGreaterOrEqualTo: 1
+  properties:
+  - $ref: shipment.odcs.yaml#/schema/0/properties/0
+    physicalName: "sid"
+    physicalType: "uuid"
+  - $ref: shipment.odcs.yaml#/schema/0/properties/1
+    physicalName: "oid"
+    physicalType: "text"
+  - $ref: shipment.odcs.yaml#/schema/0/properties/2
+    physicalType: "timestamp_tz"
+  - $ref: shipment.odcs.yaml#/schema/0/properties/3
+    physicalType: "text"
+  - $ref: shipment.odcs.yaml#/schema/0/properties/4
+    physicalType: "text"
+  - $ref: shipment.odcs.yaml#/schema/0/properties/5
+    physicalType: "text"
+  - $ref: shipment.odcs.yaml#/schema/0/properties/6
+    physicalType: "json"
+    quality:
+    - type: "text"
+      description: "{field} must contain the field \"destination\""
+  - $ref: shipment.odcs.yaml#/schema/0/properties/7
+    physicalType: "JSON"
+servers:
+- server: "production"
+  type: "bigquery"
+  environment: "production"
+  dataset: "shipments_v1"
+  project: "acme_shipments_prod"
+support:
+- channel: "slackname"
+  url: "http://find.me.here"
+  tool: "slack"
+  scope: "interactive"
+authoritativeDefinitions:
+- type: "Guidelines"
+  url: "https://example.com/guidelines"
+price:
+  priceAmount: 1
+  priceCurrency: "EUR"
+  priceUnit: "Per 1000 requests"
+team:
+  name: "fullfillment"
+  members:
+  - username: "vimportant"
+    role: "administrator"
+    dateIn: "2020-01-01"
+  - username: "nimportant"
+    role: "reader"
+    dateIn: "2020-01-01"
+    dateOut: "2024-10-10"
+slaProperties:
+- property: "availability"
+  value: "95%"
+  unit: "%"
+  driver: "operational"

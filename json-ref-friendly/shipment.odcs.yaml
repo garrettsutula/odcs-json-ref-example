@@ -1,0 +1,135 @@
+apiVersion: "v3.1.0"
+kind: "DataContract"
+id: "valid_odcs"
+name: "Shipment Logical Model and Metadata"
+version: "2.0.0"
+status: "draft"
+tenant: "company-A"
+tags:
+- "datalocation:EU"
+description:
+  purpose: "This data can be used for analytical purposes"
+  usage: "Use this to analyze shipments"
+  limitations: "Not suitable for real-time use cases"
+  authoritativeDefinitions:
+  - type: "Data Guidelines"
+    url: "https://example.com/data-guidelines.html"
+  customProperties:
+  - property: "github_link"
+    value: "https://github.example.com/shipment-specification.yaml"
+customProperties:
+- property: "additionalField"
+  value: "some value in a new major contract"
+schema:
+  shipment:
+    name: "shipment"
+    businessName: "Shipment"
+    description: "This logical model contains shipment data, including details about shipment IDs, associated orders, delivery dates, carriers, tracking numbers, statuses, and additional shipment information in JSON format."
+    dataGranularityDescription: "Not Aggregated"
+    logicalType: object
+    tags:
+    - "pii"
+    properties:
+      shipment_id:
+        name: "shipment_id"
+        businessName: "Shipment ID"
+        logicalType: "string"
+        description: "Unique identifier for each shipment."
+        unique: true
+        primaryKey: true
+        classification: "internal"
+        examples:
+        - "123e4567-e89b-12d3-a456-426614174000"
+        tags:
+        - "businesskey"
+        authoritativeDefinitions:
+        - type: "definition"
+          url: "https://datamesh-manager-demo.azurecontainerapps.io/demo440238121320/definitions/fulfillment/shipment_id"
+      order_id:
+        name: "order_id"
+        authoritativeDefinitions:
+        - type: "definition"
+          url: "https://datamesh-manager-demo.azurecontainerapps.io/demo440238121320/definitions/sales/order_id"
+      delivery_date:
+        name: "delivery_date"
+        businessName: "Delivery Date"
+        logicalType: "date"
+        description: "The actual or expected delivery date of the shipment."
+        classification: "internal"
+        examples:
+        - "2023-10-01T10:00:00Z"
+      carrier:
+        name: "carrier"
+        businessName: "Carrier"
+        logicalType: "string"
+        description: "The shipping carrier used for the delivery."
+        classification: "internal"
+        examples:
+        - "FedEx"
+        - "UPS"
+      tracking_number:
+        name: "tracking_number"
+        businessName: "Tracking Number"
+        logicalType: "string"
+        description: "Tracking number provided by the carrier."
+        classification: "restricted"
+        examples:
+        - "1Z999AA10123456784"
+        customProperties:
+        - property: "external"
+          value: "true"
+      status:
+        name: "status"
+        businessName: "Status"
+        logicalType: "string"
+        description: "Current status of the shipment."
+        classification: "internal"
+        examples:
+        - "Delivered"
+        - "In Transit"
+      inline_object_definition:
+        name: "inline_object_definition"
+        businessName: "Inline Object Definition"
+        logicalType: "object"
+        description: "A JSON representation of additional shipment info"
+        classification: "internal"
+        examples:
+        - "{\"destination\": \"New York\"}"
+        quality:
+        - type: "text"
+          description: "{field} must contain the field \"destination\""
+      address:
+        name: "address"
+        businessName: "Shipment Address"
+        logicalType: "object"
+        description: "Shipping address details."
+        required: true
+        classification: "restricted"
+        properties:
+          street:
+            name: "street"
+            businessName: "Street"
+            logicalType: "string"
+            description: "Street address."
+            required: true
+            classification: "restricted"
+            examples:
+            - "Marienplatz 1"
+          city:
+            name: "city"
+            businessName: "City"
+            logicalType: "string"
+            description: "City of the shipping address."
+            required: true
+            classification: "restricted"
+            examples:
+            - "Munich"
+          country:
+            name: "country"
+            businessName: "Country"
+            logicalType: "string"
+            description: "Country of the shipping address."
+            required: true
+            classification: "restricted"
+            examples:
+            - "DE"
